@@ -15,7 +15,6 @@ from django.core.urlresolvers import reverse_lazy
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -43,6 +42,7 @@ INSTALLED_APPS = (
     'cspreports',
     'djangae.contrib.gauth.datastore',
     'djangae.contrib.security',
+    'blog',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -105,19 +105,18 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-
 STATIC_URL = '/static/'
-
+STATIC_ROOT = 'static'
 
 if DEBUG:
     CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 
-# sensible default CPS settings, feel free to modify them
+# sensible default CSP settings, feel free to modify them
 CSP_DEFAULT_SRC = ("'self'", "*.gstatic.com")
-CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", "*.gstatic.com")
+CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", "*.gstatic.com", "maxcdn.bootstrapcdn.com")
 CSP_FONT_SRC = ("'self'", "themes.googleusercontent.com", "*.gstatic.com")
 CSP_FRAME_SRC = ("'self'", "www.google.com", "www.youtube.com", "accounts.google.com", "apis.google.com", "plus.google.com")
-CSP_SCRIPT_SRC = ("'self'", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com")
+CSP_SCRIPT_SRC = ("'self'", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com", "maxcdn.bootstrapcdn.com")
 CSP_IMG_SRC = ("'self'", "data:", "s.ytimg.com", "*.googleusercontent.com", "*.gstatic.com")
 CSP_CONNECT_SRC = ("'self'", "plus.google.com", "www.google-analytics.com")
 
