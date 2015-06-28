@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>{% block head_title %}Welcome to my blog{% endblock %}</title>
+    <title>{% block head_title %}The PotBET Blog{% endblock %}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
@@ -13,17 +13,34 @@
     
   </head>
   <body>
-    <div class="blog-masthead">
+  
+    <nav class="navbar navbar-default">
       <div class="container">
-        <nav class="blog-nav">
-          <a class="blog-nav-item active" href="#">Home</a>
-          <a class="blog-nav-item" href="#">New features</a>
-          <a class="blog-nav-item" href="#">Press</a>
-          <a class="blog-nav-item" href="#">New hires</a>
-          <a class="blog-nav-item" href="#">About</a>
-        </nav>
-      </div>
-    </div>
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#blog-navbar-collapse" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">potBET</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="blog-navbar-collapse">
+          <ul class="nav navbar-nav">
+            {% for page in pageList %}
+              {% if page.name == activePageName %}
+                <li class="active"><a href="{{ page.link }}">{{ page.name }}<span class="sr-only">(current)</span></a></li>
+              {% else %}
+                <li><a href="{{ page.link }}">{{ page.name }}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
 
     <div class="container">
       {% block content %}
@@ -31,7 +48,7 @@
       {% endblock %}
     </div>
   
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   </body>
 </html>
