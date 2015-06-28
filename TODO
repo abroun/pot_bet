@@ -5,7 +5,7 @@ Implement frontend functionality
     - Sort out nav bar - Done
     - Implement paging
 Implement custom admin UI
-    - Restrict users who can access the page
+    - Restrict users who can access the page - Done
     - List posts
     - Add option to add posts
     - Add option to delete owned posts

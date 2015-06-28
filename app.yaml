@@ -15,8 +15,17 @@ handlers:
   static_dir: static
   secure: always
 
-# Set Django admin to be login:admin as well as Django's is_staff restriction
+# Custom admin page. Access is limited to users that are logged into
+# Google Apps and are either an owner of the app or have an email with
+# potatolondon.com or potatobristol.com domain
 - url: /admin.*
+  script: scaffold.wsgi.application
+  secure: always
+  login: required
+
+# Django admin is moved to one side but requires full Google App admin
+# rights to access
+- url: /djangoadmin.*
   script: scaffold.wsgi.application
   secure: always
   login: admin

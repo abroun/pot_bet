@@ -38,6 +38,11 @@
               {% endif %}
             {% endfor %}
           </ul>
+          {% if loggedIn %}
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="{{ logoutLink }}">Logout</a></li>
+            </ul>
+          {% endif %}
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>

@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+  {% if posts %}
+    {% for post in posts %}
+      <div class="row">
+        <div class="col-xs-12 blog-main">
+          <a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>There are no admin posts.</p>
+  {% endif %}
+  
+{% endblock %}
