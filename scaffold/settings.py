@@ -120,5 +120,9 @@ CSP_SCRIPT_SRC = ("'self'", "*.googleanalytics.com", "*.google-analytics.com", "
 CSP_IMG_SRC = ("'self'", "data:", "s.ytimg.com", "*.googleusercontent.com", "*.gstatic.com")
 CSP_CONNECT_SRC = ("'self'", "plus.google.com", "www.google-analytics.com")
 
+if DEBUG:
+    # In debug mode it seems that on Firefox, https sources have to be added in manually
+    CSP_STYLE_SRC = CSP_STYLE_SRC + ( "https://maxcdn.bootstrapcdn.com", )
+    CSP_SCRIPT_SRC = CSP_SCRIPT_SRC + ( "https://ajax.googleapis.com", "https://maxcdn.bootstrapcdn.com" )
 
 from djangae.contrib.gauth.settings import *
