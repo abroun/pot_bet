@@ -1,0 +1,12 @@
+Replace default user - Not needed
+Deploy app with with first pass at security - Done
+Implement frontend functionality
+    - Title for page
+    - Sort out nav bar
+    - Implement paging
+Implement custom admin UI
+    - Restrict users who can access the page
+    - List posts
+    - Add option to add posts
+    - Add option to delete owned posts
+    - Add option to edit owned posts

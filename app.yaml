@@ -1,4 +1,4 @@
-application: djangae-scaffold
+application: pot-bet
 version: 1
 runtime: python27
 api_version: 1
@@ -11,8 +11,8 @@ handlers:
   login: admin
   secure: always
 
-- url: /static/admin/
-  static_dir: sitepackages/django/contrib/admin/static/admin/
+- url: /static/
+  static_dir: static
   secure: always
 
 # Set Django admin to be login:admin as well as Django's is_staff restriction
