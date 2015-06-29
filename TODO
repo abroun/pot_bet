@@ -4,9 +4,11 @@ Implement frontend functionality
     - Title for page - Done
     - Sort out nav bar - Done
     - Implement paging
+    - Improve the styling of the frontend pages
 Implement custom admin UI
     - Restrict users who can access the page - Done
-    - List posts
-    - Add option to add posts
+    - List posts - Done
+    - Add option to add posts - Done
+    - Improve the styling of the admin pages
     - Add option to delete owned posts
     - Add option to edit owned posts

@@ -8,6 +8,7 @@ class BlogPost( models.Model ):
     text = models.TextField()
     posted_date = models.DateField( auto_now_add=True )
     tags = fields.ListField( models.CharField( max_length=100 ) )
+    author_user_id = models.CharField( max_length=21 )
     
     def __unicode__( self ):
         return self.title
@@ -15,3 +16,6 @@ class BlogPost( models.Model ):
     @models.permalink
     def get_absolute_url( self ):
         return ( 'view_blog_post', None, { 'slug': self.slug } )
+    
+    
+    

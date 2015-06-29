@@ -16,6 +16,7 @@ urlpatterns = [
         'blog.views.view_post', 
         name='view_blog_post' ),
     
+    url(r'^admin/add-post', 'blog.views.add_post'),
     url(r'^admin/', 'blog.views.admin'),
     
     url(r'^_ah/', include('djangae.urls')),

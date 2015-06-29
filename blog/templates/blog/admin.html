@@ -1,6 +1,13 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+
+  <div class="row">
+    <div class="col-xs-12 blog-main">
+      <a href="/admin/add-post">Add Post</a></li>
+    </div>
+  </div>
+
   {% if posts %}
     {% for post in posts %}
       <div class="row">
