@@ -7,7 +7,6 @@ class BlogPost( models.Model ):
     slug = models.SlugField( max_length=100, unique=True )
     text = models.TextField()
     posted_date = models.DateField( auto_now_add=True )
-    tags = fields.ListField( models.CharField( max_length=100 ) )
     author_user_id = models.CharField( max_length=21 )
     
     def __unicode__( self ):

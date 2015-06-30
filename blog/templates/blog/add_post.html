@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %} 
+{% load staticfiles %}
 {% block head_title %}Add New Post{% endblock %}
 
 {% block content %}  
@@ -30,6 +31,13 @@
           </span>
         {% endif %}
       </div>
+      
+      {% if field.name == "text" %}
+        <div class="form-group">
+          <label class="control-label" for="preview">Preview</label> 
+          <div id="preview"> </div>
+        </div>
+      {% endif %}
     
     {% endfor %}
     <div class="form-actions">
@@ -40,6 +48,10 @@
 
 
 {% block extra_scripts %}
+
+    <script src="{% static 'blog/markdown-0.6.0-beta1.min.js' %}"></script>
+    
+
     <script>
     $(document).ready(function(){
       $( "[data-toggle='tooltip']" ).tooltip();
@@ -55,5 +67,15 @@
       $( "#id_slug" ).val( title.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-') );
     
     }
+    
+    function Editor( input, preview ) {
+      this.update = function () {
+        preview.innerHTML = markdown.toHTML( input.value );
+      };
+      input.editor = this;
+      this.update();
+    }
+    
+    new Editor( document.getElementById( "id_text" ), document.getElementById( "preview" ) );
     </script>
 {% endblock %}

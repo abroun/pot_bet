@@ -3,6 +3,9 @@
 
 This is a simple blogsite implemented in Django for use on the Google App Engine using [Djangae](https://github.com/potatolondon/djangae)
 
+Markdown rendering is implemented using the [markdown-js](https://github.com/evilstreak/markdown-js) library.
+
+
 To get started:
 
  - Clone this repo
