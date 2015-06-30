@@ -164,3 +164,17 @@ h6, .h6 {
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
+
+.blog-markdown-display {
+    overflow: hidden;
+}
+
+.blog-markdown-display img {
+    max-width: 100%;
+}
+
+.blog-markdown-display code {
+    max-width: 100%;
+    word-wrap: break-word;
+    whitespace: normal;
+}
