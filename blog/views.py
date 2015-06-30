@@ -66,9 +66,10 @@ def admin( request ):
     blogPosts = list( BlogPost.objects.all() )
     
     if pk != None:
+        
         pkFound = False
         for post in blogPosts:
-            if post._get_pk_val() == pk:
+            if unicode( post._get_pk_val() ) == pk:
                 pkFound = True
                 break
             
@@ -94,7 +95,9 @@ def add_post( request ):
 
         if form.is_valid():
             
-            newPost = form.save()
+            newPost = form.save( commit=False )
+            newPost.author_user_id = request.user.username
+            newPost.save()
             pk = newPost._get_pk_val()
             
             # Go back to the admin page, but pas back the primary key of the 
