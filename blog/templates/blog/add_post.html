@@ -2,9 +2,31 @@
 {% block head_title %}Add New Post{% endblock %}
 
 {% block content %}
-  <form action="/admin/add-post" method="post">
+  
+  <form class="form" action="/admin/add-post" method="post">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit" />
-  </form>
+    {% for field in form %}
+      {% if field.errors %}
+        <div class="form-group has-error">
+          <label class="control-label" for="{{ field.id_for_label }}">
+            {{ field.label }}
+          </label> 
+          {{ field }}
+          <span class="help-inline">
+            {% for error in  field.errors %}{{ error }}{% endfor %}
+          </span>
+        </div>
+      {% else %}
+        <div class="form-group">
+          <label class="control-label" for="{{ field.id_for_label }}">
+            {{ field.label }}
+          </label> 
+          {{ field }}
+        </div>
+      {% endif %}
+    {% endfor %}
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary" >Submit</button>
+    </div>
+</form>
 {% endblock %}
