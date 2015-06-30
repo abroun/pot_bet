@@ -116,7 +116,7 @@ CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", "*.gstatic.com", "maxcdn.boot
 CSP_FONT_SRC = ("'self'", "themes.googleusercontent.com", "*.gstatic.com")
 CSP_FRAME_SRC = ("'self'", "www.google.com", "www.youtube.com", "accounts.google.com", "apis.google.com", "plus.google.com")
 CSP_SCRIPT_SRC = ("'self'", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com", "maxcdn.bootstrapcdn.com")
-CSP_IMG_SRC = ("'self'", "data:", "s.ytimg.com", "*.googleusercontent.com", "*.gstatic.com")
+CSP_IMG_SRC = ( "*" )   # Set open to allow users to link to images from anywhere
 CSP_CONNECT_SRC = ("'self'", "plus.google.com", "www.google-analytics.com")
 
 if DEBUG:

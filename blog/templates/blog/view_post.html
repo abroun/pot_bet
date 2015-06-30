@@ -2,6 +2,14 @@
 {% block head_title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-  {{ post.title }}
-  {{ post.text }}
+  <div class="row">
+    <div class="col-xs-12 blog-main">
+      {{ post.title }}
+    </div>
+  </div>
+  
+  <div id="preview" class="blog-markdown-display"> 
+    {{ post_formatted_text |safe }}
+  </div>
+  
 {% endblock %}

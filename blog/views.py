@@ -6,6 +6,8 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 import utils
 import djangae.db.transaction
+import markdown
+import bleach
 
 from google.appengine.api import users
 
@@ -22,6 +24,20 @@ PAGE_LIST = [
     PageInfo( "Home", "/" ),
     PageInfo( "Admin", "/admin" )
 ]
+
+#---------------------------------------------------------------------------------------------------
+# Tag and attribute whitelists for when converting user entered markdown to sanitized HTML
+ALLOWED_HTML_TAGS = [
+    "a", "abbr", "acronym", "b", "blockquote", "code", "em", "h1", "h2", "h3", "h4",
+    "h5", "h6", "i", "img", "li", "ol", "p", "strong", "ul"
+]
+
+ALLOWED_HTML_ATTRIBUTES = {
+    "a" : [ "href", "title" ], 
+    "abbr" : [ "title" ], 
+    "acronym": [ "title" ],
+    "img" : [ "src", "alt" ]
+}
 
 #---------------------------------------------------------------------------------------------------
 def get_template_dict( activePageName, user ):
@@ -50,7 +66,10 @@ def view_post( request, slug ):
 
     templateDict = get_template_dict( None, request.user )
     templateDict[ "post" ] = get_object_or_404( BlogPost, slug=slug )
-
+    templateDict[ "post_formatted_text" ] = bleach.clean(
+        markdown.markdown( templateDict[ "post" ].text ), 
+        tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_HTML_ATTRIBUTES )
+    
     return render_to_response( "blog/view_post.html", templateDict )
     
 #---------------------------------------------------------------------------------------------------
