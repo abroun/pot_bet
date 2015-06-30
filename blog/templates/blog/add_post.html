@@ -1,32 +1,59 @@
 {% extends 'blog/base.html' %} 
 {% block head_title %}Add New Post{% endblock %}
 
-{% block content %}
-  
+{% block content %}  
   <form class="form" action="/admin/add-post" method="post">
     {% csrf_token %}
     {% for field in form %}
-      {% if field.errors %}
-        <div class="form-group has-error">
-          <label class="control-label" for="{{ field.id_for_label }}">
-            {{ field.label }}
-          </label> 
+      
+      <div class="form-group{% if field.errors %} has-error{% endif %}">
+        <label class="control-label" for="{{ field.id_for_label }}">
+          {{ field.label }}
+        </label> 
+        {% if field.name == "slug" %}
+          <div class="input-group">
+            {{ field }}
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" 
+                onclick="generateSlug()" aria-label="Generate Slug"
+                data-toggle="tooltip" title="Generate Slug" data-container="body">
+                <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
+              </button>
+            </span>
+          </div>
+        {% else %}
           {{ field }}
+        {% endif %}
+        {% if field.errors %}
           <span class="help-inline">
             {% for error in  field.errors %}{{ error }}{% endfor %}
           </span>
-        </div>
-      {% else %}
-        <div class="form-group">
-          <label class="control-label" for="{{ field.id_for_label }}">
-            {{ field.label }}
-          </label> 
-          {{ field }}
-        </div>
-      {% endif %}
+        {% endif %}
+      </div>
+    
     {% endfor %}
     <div class="form-actions">
         <button type="submit" class="btn btn-primary" >Submit</button>
     </div>
 </form>
+{% endblock %}
+
+
+{% block extra_scripts %}
+    <script>
+    $(document).ready(function(){
+      $( "[data-toggle='tooltip']" ).tooltip();
+    });
+    
+    function generateSlug() {
+
+      // Get the current title
+      var title = $( "#id_title" ).val();
+      
+      // Use it to generate a slug
+      // Recipe from http://stackoverflow.com/a/1054862
+      $( "#id_slug" ).val( title.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-') );
+    
+    }
+    </script>
 {% endblock %}
