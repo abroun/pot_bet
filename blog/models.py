@@ -1,20 +1,26 @@
 from django.db import models
 from djangae import fields
+from django.core.urlresolvers import reverse
 
 # Create your models here.
 class BlogPost( models.Model ):
     title = models.CharField( max_length=100 )
     slug = models.SlugField( max_length=100, unique=True )
     text = models.TextField()
-    posted_date = models.DateField( auto_now_add=True )
+    posted_date_time = models.DateTimeField( auto_now_add=True )
     author_user_id = models.CharField( max_length=21 )
+    author_email = models.EmailField()
     
     def __unicode__( self ):
         return self.title
     
-    @models.permalink
     def get_absolute_url( self ):
-        return ( 'view_blog_post', None, { 'slug': self.slug } )
+        return reverse( "view_blog_post", kwargs={ "slug": self.slug } )
     
+    def get_absolute_edit_url( self ):
+        return reverse( "edit_blog_post", kwargs={ "slug": self.slug } )
+    
+    def get_absolute_delete_url( self ):
+        return reverse( "delete_blog_post", kwargs={ "slug": self.slug } )
     
     

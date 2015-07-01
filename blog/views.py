@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect, re
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 import utils
 import djangae.db.transaction
 import markdown
@@ -25,11 +26,13 @@ PAGE_LIST = [
     PageInfo( "Admin", "/admin" )
 ]
 
+NUM_SNIPPET_LINES = 3
+
 #---------------------------------------------------------------------------------------------------
 # Tag and attribute whitelists for when converting user entered markdown to sanitized HTML
 ALLOWED_HTML_TAGS = [
     "a", "abbr", "acronym", "b", "blockquote", "code", "em", "h1", "h2", "h3", "h4",
-    "h5", "h6", "i", "img", "li", "ol", "p", "strong", "ul"
+    "h5", "h6", "hr", "i", "img", "li", "ol", "p", "pre", "strong", "table", "tr", "td", "ul"
 ]
 
 ALLOWED_HTML_ATTRIBUTES = {
@@ -54,15 +57,75 @@ def get_template_dict( activePageName, user ):
     return templateDict
 
 #---------------------------------------------------------------------------------------------------
+def format_text( markdown_text ):
+    
+    """Converts markdown text to sanitized HTML"""
+    
+    return bleach.clean( markdown.markdown( markdown_text ), 
+        tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_HTML_ATTRIBUTES )
+
+#---------------------------------------------------------------------------------------------------
+def get_formatted_snippet( markdown_text ):
+    
+    # Get the first NUM_SNIPPET_LINES of non blank text in the markdown
+    lines = markdown_text.split( "\n" )
+    
+    snippet_lines = []
+    num_non_blank_lines = 0
+    
+    for line in lines:
+        
+        snippet_lines.append( line )
+        
+        if line.strip() != "":
+            num_non_blank_lines += 1
+            
+            if num_non_blank_lines >= NUM_SNIPPET_LINES:
+                break   # Found enough lines
+            
+    # Now format the snippet text
+    snippet_text = "\n".join( snippet_lines )
+    return format_text( snippet_text )
+
+#---------------------------------------------------------------------------------------------------
 def index( request ):
     
     templateDict = get_template_dict( "Home", request.user )
-    templateDict[ "posts" ] = BlogPost.objects.all()[:5]
+    templateDict[ "posts" ] = BlogPost.objects.all().order_by( "-posted_date_time" )[:5]
+    
+    for post in templateDict[ "posts" ]:
+        post.formatted_snippet = get_formatted_snippet( post.text )
     
     return render_to_response( "blog/index.html", templateDict )
 
 #---------------------------------------------------------------------------------------------------
 def view_post( request, slug ):   
+
+    templateDict = get_template_dict( None, request.user )
+    templateDict[ "post" ] = get_object_or_404( BlogPost, slug=slug )
+    templateDict[ "post_formatted_text" ] = format_text( templateDict[ "post" ].text )
+    
+    return render_to_response( "blog/view_post.html", templateDict )
+    
+#---------------------------------------------------------------------------------------------------
+def edit_post( request, slug ):   
+
+    if not utils.user_has_admin_rights( request.user ):
+        raise PermissionDenied
+
+    templateDict = get_template_dict( None, request.user )
+    templateDict[ "post" ] = get_object_or_404( BlogPost, slug=slug )
+    templateDict[ "post_formatted_text" ] = bleach.clean(
+        markdown.markdown( templateDict[ "post" ].text ), 
+        tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_HTML_ATTRIBUTES )
+    
+    return render_to_response( "blog/view_post.html", templateDict )
+
+#---------------------------------------------------------------------------------------------------
+def delete_post( request, slug ):   
+
+    if not utils.user_has_admin_rights( request.user ):
+        raise PermissionDenied
 
     templateDict = get_template_dict( None, request.user )
     templateDict[ "post" ] = get_object_or_404( BlogPost, slug=slug )
@@ -97,6 +160,17 @@ def admin( request ):
             if blogPost != None:
                 blogPosts.append( blogPost )
     
+    
+    blogPosts = sorted( blogPosts, reverse=True,
+        key=lambda x: x.posted_date_time if x.posted_date_time != None else timezone.now() )
+    
+    # Mark all blog posts which the current user owns
+    for post in blogPosts:
+        if unicode( post.author_user_id ) == request.user.username:
+            post.cur_user_is_owner = True
+        else:
+            post.cur_user_is_owner = False
+    
     templateDict = get_template_dict( "Admin", request.user )
     templateDict[ "posts" ] = blogPosts
     
@@ -116,6 +190,7 @@ def add_post( request ):
             
             newPost = form.save( commit=False )
             newPost.author_user_id = request.user.username
+            newPost.author_email = request.user.email
             newPost.save()
             pk = newPost._get_pk_val()
             

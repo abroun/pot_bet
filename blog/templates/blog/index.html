@@ -2,15 +2,22 @@
 
 {% block content %}
   <div class="blog-header">
-    <h1 class="blog-title">The PotBET Blog</h1>
-    <p class="lead blog-description">A simple blog site built with Django.</p>
+    <p class="lead blog-description">
+      Welcome to potBET. A simple blog site built with Django.
+    </p>
   </div>
 
   {% if posts %}
     {% for post in posts %}
-      <div class="row">
+      <div class="row blog-index-row">
         <div class="col-xs-12 blog-main">
-          <a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+          <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+          <p class="blog-post-meta">{{ post.posted_date_time }}</p>
+          
+          <div id="preview" class="blog-markdown-display"> 
+            {{ post.formatted_snippet |safe }}
+          </div>
+          <a href="{{ post.get_absolute_url }}">More...</a>
         </div>
       </div>
     {% endfor %}
@@ -20,8 +27,8 @@
   
   <nav>
     <ul class="pager">
-      <li><a href="#">Previous</a></li>
-      <li><a href="#">Next</a></li>
+      <li><a href="/">Previous</a></li>
+      <li><a href="/">Next</a></li>
     </ul>
   </nav>
   

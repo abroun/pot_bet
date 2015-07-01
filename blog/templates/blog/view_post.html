@@ -4,12 +4,15 @@
 {% block content %}
   <div class="row">
     <div class="col-xs-12 blog-main">
-      {{ post.title }}
+      <h2 class="blog-post-title">{{ post.title }}</h2>
+      <p class="blog-post-meta">{{ post.posted_date_time }}</p>
+      
+      <div id="preview" class="blog-markdown-display"> 
+        {{ post_formatted_text |safe }}
+      </div>
     </div>
   </div>
   
-  <div id="preview" class="blog-markdown-display"> 
-    {{ post_formatted_text |safe }}
-  </div>
+  
   
 {% endblock %}
