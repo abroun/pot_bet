@@ -27,6 +27,7 @@ PAGE_LIST = [
 ]
 
 NUM_SNIPPET_LINES = 3
+NUM_ITEMS_PER_PAGE = 5
 
 #---------------------------------------------------------------------------------------------------
 # Tag and attribute whitelists for when converting user entered markdown to sanitized HTML
@@ -90,8 +91,29 @@ def get_formatted_snippet( markdown_text ):
 #---------------------------------------------------------------------------------------------------
 def index( request ):
     
+    # Work out which page we should show
+    page = request.GET.get( "page", 0 )
+    if page != None:
+        try:
+            page = int( page )
+            if page < 0:
+                page = 0
+
+        except:
+            page = 0    # Ignore any parse errors and set page to a safe value
+    
+    start_index = page*NUM_ITEMS_PER_PAGE
+    
+    all_posts = BlogPost.objects.all().order_by( "-posted_date_time" )
+    num_posts = len( all_posts )
+    num_pages = int( num_posts/NUM_ITEMS_PER_PAGE ) + 1
+    if num_posts > 0 and num_posts%NUM_ITEMS_PER_PAGE == 0:
+        num_pages -= 1
+    
     templateDict = get_template_dict( "Home", request.user )
-    templateDict[ "posts" ] = BlogPost.objects.all().order_by( "-posted_date_time" )[:5]
+    templateDict[ "page" ] = page
+    templateDict[ "num_pages" ] = num_pages
+    templateDict[ "posts" ] = all_posts[ start_index:start_index+5 ]
     
     for post in templateDict[ "posts" ]:
         post.formatted_snippet = get_formatted_snippet( post.text )

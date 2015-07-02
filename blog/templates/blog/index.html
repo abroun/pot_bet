@@ -27,8 +27,12 @@
   
   <nav>
     <ul class="pager">
-      <li><a href="/">Previous</a></li>
-      <li><a href="/">Next</a></li>
+      {% if page < num_pages|add:'-1' %}
+        <li><a href="/?page={{ page|add:'1' }}">Older</a></li>
+      {% endif %}
+      {% if page > 0 %}
+        <li><a href="/?page={{ page|add:'-1' }}">Newer</a></li>
+      {% endif %}
     </ul>
   </nav>
   
