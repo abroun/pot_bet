@@ -149,13 +149,9 @@ def delete_post( request, slug ):
     if not utils.user_has_admin_rights( request.user ):
         raise PermissionDenied
 
-    templateDict = get_template_dict( None, request.user )
-    templateDict[ "post" ] = get_object_or_404( BlogPost, slug=slug )
-    templateDict[ "post_formatted_text" ] = bleach.clean(
-        markdown.markdown( templateDict[ "post" ].text ), 
-        tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_HTML_ATTRIBUTES )
+    get_object_or_404( BlogPost, slug=slug ).delete()
     
-    return render_to_response( "blog/view_post.html", templateDict )
+    return redirect( "blog.views.admin" )
     
 #---------------------------------------------------------------------------------------------------
 def admin( request ):
