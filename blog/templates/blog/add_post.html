@@ -1,9 +1,15 @@
 {% extends 'blog/base.html' %} 
 {% load staticfiles %}
-{% block head_title %}Add New Post{% endblock %}
+{% block head_title %}
+  {% if editing_post %}
+    Editing Post - {{ form.title.value }}
+  {% else %}
+    Add New Post
+  {% endif %}
+{% endblock %}
 
 {% block content %}  
-  <form class="form" action="/admin/add-post" method="post">
+  <form class="form" action="{% if editing_post %}{{ edit_link }}{% else %}/admin/add-post{% endif %}" method="post">
     {% csrf_token %}
     {% for field in form %}
       

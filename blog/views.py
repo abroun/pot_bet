@@ -123,7 +123,7 @@ def index( request ):
 #---------------------------------------------------------------------------------------------------
 def view_post( request, slug ):   
 
-    templateDict = get_template_dict( None, request.user )
+    templateDict = get_template_dict( "Home", request.user )
     templateDict[ "post" ] = get_object_or_404( BlogPost, slug=slug )
     templateDict[ "post_formatted_text" ] = format_text( templateDict[ "post" ].text )
     
@@ -135,13 +135,29 @@ def edit_post( request, slug ):
     if not utils.user_has_admin_rights( request.user ):
         raise PermissionDenied
 
-    templateDict = get_template_dict( None, request.user )
-    templateDict[ "post" ] = get_object_or_404( BlogPost, slug=slug )
-    templateDict[ "post_formatted_text" ] = bleach.clean(
-        markdown.markdown( templateDict[ "post" ].text ), 
-        tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_HTML_ATTRIBUTES )
+    blog_post = get_object_or_404( BlogPost, slug=slug )
     
-    return render_to_response( "blog/view_post.html", templateDict )
+    if request.method == "POST":
+        # Create a form instance and populate it with data from the request:
+        form = BlogPostForm( request.POST, instance=blog_post )
+
+        if form.is_valid():
+            
+            form.save()
+            
+            # Go back to the admin page
+            return redirect( "blog.views.admin" )
+
+    else:
+        # Create a form from the existing blog post
+        form = BlogPostForm( instance=blog_post )
+
+    templateDict = get_template_dict( "Admin", request.user )
+    templateDict[ "form" ] = form
+    templateDict[ "editing_post" ] = True
+    templateDict[ "edit_link" ] = blog_post.get_absolute_edit_url()
+
+    return render( request, "blog/add_post.html", templateDict )
 
 #---------------------------------------------------------------------------------------------------
 def delete_post( request, slug ):   
