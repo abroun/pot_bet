@@ -101,6 +101,9 @@ h6, .h6 {
 .blog-main {
   font-size: 18px;
   line-height: 1.5;
+  
+  overflow: hidden;
+  word-wrap: break-word;
 }
 
 /* Sidebar modules for boxing content */
@@ -192,6 +195,9 @@ h6, .h6 {
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-bottom-color: rgb( 128, 128, 128 );
+    
+    overflow: hidden;
+    word-wrap: break-word;
 }
 
 .blog-post-list-footer-row {
@@ -200,4 +206,7 @@ h6, .h6 {
 
 .blog-index-row {
     padding-bottom: 25px;
+    
+    overflow: hidden;
+    word-wrap: break-word;
 }
