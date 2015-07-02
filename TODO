@@ -11,7 +11,7 @@ Implement custom admin UI
     - Add option to add posts - Done
     - Improve the styling of the admin pages - Done
     - Add option to delete owned posts - Done
-    - Add option to edit owned posts
+    - Add option to edit owned posts - Done
     
 Fix possible problem with settings file (CSP settings set for DEBUG=True and then DEBUG changed...)
 

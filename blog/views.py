@@ -157,7 +157,7 @@ def edit_post( request, slug ):
     templateDict[ "editing_post" ] = True
     templateDict[ "edit_link" ] = blog_post.get_absolute_edit_url()
 
-    return render( request, "blog/add_post.html", templateDict )
+    return render( request, "blog/add_edit_post.html", templateDict )
 
 #---------------------------------------------------------------------------------------------------
 def delete_post( request, slug ):   
@@ -241,7 +241,7 @@ def add_post( request ):
     templateDict = get_template_dict( "Admin", request.user )
     templateDict[ "form" ] = form
 
-    return render( request, "blog/add_post.html", templateDict )
+    return render( request, "blog/add_edit_post.html", templateDict )
     
 #---------------------------------------------------------------------------------------------------
 def permission_denied( request ):
