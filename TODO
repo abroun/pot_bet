@@ -13,7 +13,7 @@ Implement custom admin UI
     - Add option to delete owned posts - Done
     - Add option to edit owned posts - Done
     
-Fix possible problem with settings file (CSP settings set for DEBUG=True and then DEBUG changed...)
+Fix possible problem with settings file (CSP settings set for DEBUG=True and then DEBUG changed...) - Done
 
 Nice to have
 ------------

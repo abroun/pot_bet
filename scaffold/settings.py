@@ -8,6 +8,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
+import copy
 from djangae.settings_base import * #Set up some AppEngine specific stuff
 from django.core.urlresolvers import reverse_lazy
 
@@ -107,21 +108,29 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
 
-if DEBUG:
-    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+# Default CSP settings, used as the basis for both development and production settings
+DEFAULT_CSP_DEFAULT_SRC = ("'self'", "*.gstatic.com")
+DEFAULT_CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", 
+                         "*.gstatic.com", "maxcdn.bootstrapcdn.com")
+DEFAULT_CSP_FONT_SRC = ("'self'", "themes.googleusercontent.com", "*.gstatic.com")
+DEFAULT_CSP_FRAME_SRC = ("'self'", "www.google.com", "www.youtube.com", 
+                         "accounts.google.com", "apis.google.com", "plus.google.com")
+DEFAULT_CSP_SCRIPT_SRC = ("'self'", "*.googleanalytics.com", 
+                          "*.google-analytics.com", "ajax.googleapis.com", "maxcdn.bootstrapcdn.com")
+DEFAULT_CSP_IMG_SRC = ( "*" )   # Set open to allow users to link to images from anywhere
+DEFAULT_CSP_CONNECT_SRC = ("'self'", "plus.google.com", "www.google-analytics.com")
 
-# sensible default CSP settings, feel free to modify them
-CSP_DEFAULT_SRC = ("'self'", "*.gstatic.com")
-CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", "*.gstatic.com", "maxcdn.bootstrapcdn.com")
-CSP_FONT_SRC = ("'self'", "themes.googleusercontent.com", "*.gstatic.com")
-CSP_FRAME_SRC = ("'self'", "www.google.com", "www.youtube.com", "accounts.google.com", "apis.google.com", "plus.google.com")
-CSP_SCRIPT_SRC = ("'self'", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com", "maxcdn.bootstrapcdn.com")
-CSP_IMG_SRC = ( "*" )   # Set open to allow users to link to images from anywhere
-CSP_CONNECT_SRC = ("'self'", "plus.google.com", "www.google-analytics.com")
+# CSP settings for development (DEBUG=True) mode. For production CSP settings see settings_live.py
+CSP_DEFAULT_SRC = copy.copy( DEFAULT_CSP_DEFAULT_SRC )
+CSP_STYLE_SRC = copy.copy( DEFAULT_CSP_STYLE_SRC )
+CSP_FONT_SRC = copy.copy( DEFAULT_CSP_FONT_SRC )
+CSP_FRAME_SRC = copy.copy( DEFAULT_CSP_FRAME_SRC )
+CSP_SCRIPT_SRC = copy.copy( DEFAULT_CSP_SCRIPT_SRC )
+CSP_IMG_SRC = copy.copy( DEFAULT_CSP_IMG_SRC )
+CSP_CONNECT_SRC = copy.copy( DEFAULT_CSP_CONNECT_SRC )
 
-if DEBUG:
-    # In debug mode it seems that on Firefox, https sources have to be added in manually
-    CSP_STYLE_SRC = CSP_STYLE_SRC + ( "https://maxcdn.bootstrapcdn.com", )
-    CSP_SCRIPT_SRC = CSP_SCRIPT_SRC + ( "https://ajax.googleapis.com", "https://maxcdn.bootstrapcdn.com" )
+# In debug mode it seems that on Firefox, https sources have to be added in manually
+CSP_STYLE_SRC = CSP_STYLE_SRC + ( "https://maxcdn.bootstrapcdn.com", )
+CSP_SCRIPT_SRC = CSP_SCRIPT_SRC + ( "https://ajax.googleapis.com", "https://maxcdn.bootstrapcdn.com" )
 
 from djangae.contrib.gauth.settings import *

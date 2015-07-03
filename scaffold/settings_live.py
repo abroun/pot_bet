@@ -18,5 +18,14 @@ SECURE_REDIRECT_EXEMPT = [
 
 SECURE_CHECKS += ["scaffold.checks.check_csp_sources_not_unsafe"]
 
+# CSP settings for production (DEBUG=False) mode.
+CSP_DEFAULT_SRC = copy.copy( DEFAULT_CSP_DEFAULT_SRC )
+CSP_STYLE_SRC = copy.copy( DEFAULT_CSP_STYLE_SRC )
+CSP_FONT_SRC = copy.copy( DEFAULT_CSP_FONT_SRC )
+CSP_FRAME_SRC = copy.copy( DEFAULT_CSP_FRAME_SRC )
+CSP_SCRIPT_SRC = copy.copy( DEFAULT_CSP_SCRIPT_SRC )
+CSP_IMG_SRC = copy.copy( DEFAULT_CSP_IMG_SRC )
+CSP_CONNECT_SRC = copy.copy( DEFAULT_CSP_CONNECT_SRC )
+
 DEBUG = False
 TEMPLATE_DEBUG = False
