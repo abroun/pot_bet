@@ -17,6 +17,9 @@ class BlogPost( models.Model ):
     def get_absolute_url( self ):
         return reverse( "view_blog_post", kwargs={ "slug": self.slug } )
     
+    def get_absolute_admin_view_url( self ):
+        return reverse( "admin_view_blog_post", kwargs={ "slug": self.slug } )
+    
     def get_absolute_edit_url( self ):
         return reverse( "edit_blog_post", kwargs={ "slug": self.slug } )
     

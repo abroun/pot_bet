@@ -21,6 +21,9 @@ urlpatterns = [
     url( r'^admin/delete/(?P<slug>[^\.]+).html', 
         'blog.views.delete_post', 
         name='delete_blog_post' ),
+    url( r'^admin/view/(?P<slug>[^\.]+).html', 
+        'blog.views.admin_view_post', 
+        name='admin_view_blog_post' ),
     
     url(r'^admin/add-post', 'blog.views.add_post'),
     url(r'^admin/', 'blog.views.admin'),

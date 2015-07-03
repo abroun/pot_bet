@@ -128,6 +128,18 @@ def view_post( request, slug ):
     templateDict[ "post_formatted_text" ] = format_text( templateDict[ "post" ].text )
     
     return render_to_response( "blog/view_post.html", templateDict )
+
+#---------------------------------------------------------------------------------------------------
+def admin_view_post( request, slug ):   
+
+    if not utils.user_has_admin_rights( request.user ):
+        raise PermissionDenied
+
+    templateDict = get_template_dict( "Home", request.user )
+    templateDict[ "post" ] = get_object_or_404( BlogPost, slug=slug )
+    templateDict[ "post_formatted_text" ] = format_text( templateDict[ "post" ].text )
+    
+    return render_to_response( "blog/admin_view_post.html", templateDict )
     
 #---------------------------------------------------------------------------------------------------
 def edit_post( request, slug ):   
