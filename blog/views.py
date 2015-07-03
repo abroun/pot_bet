@@ -149,6 +149,9 @@ def edit_post( request, slug ):
 
     blog_post = get_object_or_404( BlogPost, slug=slug )
     
+    if blog_post.author_user_id != request.user.username:
+        raise PermissionDenied
+
     if request.method == "POST":
         # Create a form instance and populate it with data from the request:
         form = BlogPostForm( request.POST, instance=blog_post )
@@ -177,7 +180,11 @@ def delete_post( request, slug ):
     if not utils.user_has_admin_rights( request.user ):
         raise PermissionDenied
 
-    get_object_or_404( BlogPost, slug=slug ).delete()
+    blog_post = get_object_or_404( BlogPost, slug=slug )
+    if blog_post.author_user_id != request.user.username:
+        raise PermissionDenied
+    
+    blog_post.delete()
     
     return redirect( "blog.views.admin" )
     
